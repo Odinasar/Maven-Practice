@@ -1,11 +1,12 @@
 package com.dice;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -14,7 +15,9 @@ public class DiceJobSearch {
 
 	
 	
+	
 	public static void main(String[] args) {
+		System.out.println("Test Started at - "+ LocalDateTime.now());
 		
 		WebDriverManager.chromedriver().setup();
 		
@@ -34,40 +37,49 @@ public class DiceJobSearch {
 
 		}
 		
-		String searchKeyWord="Java Developer";
-		driver.findElement(By.id("search-field-keyword")).sendKeys(searchKeyWord);
-		driver.findElement(By.id("search-field-location")).clear();
-		driver.findElement(By.id("search-field-location")).sendKeys("VA");
-		driver.findElement(By.id("findTechJobs")).click();
+		List<String> keywordlist=new ArrayList<>();
+		keywordlist.add("SDET");
+		keywordlist.add("Java Developer");
+		keywordlist.add("automation engineer");
+		keywordlist.add("manual tester");
+		keywordlist.add("automation tester");
+		keywordlist.add("ruby developer");
+		keywordlist.add("javaScript");
+		keywordlist.add("C developer");
 		
-		String titleAfterSearch =driver.getTitle();
-		String count =driver.findElement(By.id("posiCountId")).getText();
+		System.out.println(keywordlist.get(0));
 		
-		int countResult=Integer.parseInt(count.replaceAll(",", ""));
-		if(countResult>0) {
-			System.out.println("number verified");
-		}else {
-			System.out.println("number Not verified");
-
+		
+		
+		int	countResult=0;
+		for (int i=0;i<keywordlist.size();i++ ) {
+			
+			driver.findElement(By.id("search-field-keyword")).sendKeys(keywordlist.get(i));
+			driver.findElement(By.id("search-field-location")).clear();
+			driver.findElement(By.id("search-field-location")).sendKeys("VA");
+			driver.findElement(By.id("findTechJobs")).click();
+			
+			
+			
+			String titleAfterSearch =driver.getTitle();
+			String count =driver.findElement(By.id("posiCountId")).getText();
+			
+			if(titleAfterSearch.contains(keywordlist.get(i))) {
+				System.out.println(titleAfterSearch);
+				System.out.println("Search result page is fully loaded and result number after search is displayed in the title");
+			}else {
+				System.out.println("result number after search is NOT displayed the title");
+			}
+			driver.navigate().back();
+			
 		}
-		
-		
-		System.out.println(count);
-		
-		
-		if(titleAfterSearch.contains(count+" "+searchKeyWord)) {
-			System.out.println(titleAfterSearch);
-			System.out.println("Search result page is fully loaded and result number after search is displayed in the title");
-		}else {
-			System.out.println("result number after search is NOT displayed the title");
-		}
-		 
 		
 		
 		
 	driver.close();
 	
 	System.out.println("Test complited - "+ LocalDateTime.now());
+
 		
 //		step 1. launch browser and navigate to https://dice.com
 //			expected: dice home page should be displayed
