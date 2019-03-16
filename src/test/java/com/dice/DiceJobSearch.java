@@ -1,5 +1,6 @@
 package com.dice;
 
+import java.time.LocalDateTime;
 import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
@@ -65,6 +66,8 @@ public class DiceJobSearch {
 		
 		
 	driver.close();
+	
+	System.out.println("Test complited - "+ LocalDateTime.now());
 		
 //		step 1. launch browser and navigate to https://dice.com
 //			expected: dice home page should be displayed
